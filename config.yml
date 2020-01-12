@@ -1,0 +1,3 @@
+api:
+  ettelbruck: 'https://iot.rms.lu/opendata/parking/ettelbruck'
+  luxembourg: 'https://feed.vdl.lu/circulation/parking/feed.rss'

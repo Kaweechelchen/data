@@ -66,8 +66,13 @@ def get_luxembourg():
 
     return parkings
 
-print(
-    get_ettelbruck() +
-    get_luxembourg()
-)
+def get_parking():
+    return (
+        get_ettelbruck() +
+        get_luxembourg()
+    )
 
+if __name__ == '__main__':
+    print(
+        get_parking()
+    )

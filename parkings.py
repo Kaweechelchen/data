@@ -4,6 +4,7 @@ import yaml
 import requests
 import xmltodict
 import re
+import json
 
 with open('config.yml', 'r') as config_data:
     cfg = yaml.load(config_data, yaml.BaseLoader)
@@ -74,5 +75,5 @@ def get_parking():
 
 if __name__ == '__main__':
     print(
-        get_parking()
+        json.dumps(get_parking())
     )

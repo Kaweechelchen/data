@@ -6,6 +6,7 @@ name = "pypi"
 requests = "*"
 pyyaml = "*"
 xmltodict = "*"
+argparse = "*"
 
 
 [dev-packages]

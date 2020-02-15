@@ -5,10 +5,16 @@ import requests
 import xmltodict
 import re
 import json
+import argparse
 from pprint import pprint
 
 with open('config.yml', 'r') as config_data:
     api = yaml.load(config_data, yaml.BaseLoader)['api']['charging_stations']
+
+parser = argparse.ArgumentParser(description='Chargy station statuses.')
+parser.add_argument('-t', '--total', action='store_true', help='only return totals')
+
+args = parser.parse_args()
 
 def get_chargy_stations():
     raw = xmltodict.parse(
@@ -49,6 +55,8 @@ def get_chargy_connectors():
 
                 connectors.append(connector)
     
+    if args.total:
+        return total
     return {
         'total': total,
         'connectors': connectors

@@ -7,10 +7,10 @@ import re
 import json
 
 with open('config.yml', 'r') as config_data:
-    cfg = yaml.load(config_data, yaml.BaseLoader)
+    api = yaml.load(config_data, yaml.BaseLoader)['api']['parking']
 
 def get_ettelbruck():
-    raw = requests.get(cfg['api']['ettelbruck']).json()
+    raw = requests.get(api['ettelbruck']).json()
 
     parkings = []
     for parking_raw in raw['Parkings']:
@@ -43,7 +43,7 @@ def get_ettelbruck():
 
 def get_luxembourg():
     raw = xmltodict.parse(
-        requests.get(cfg['api']['luxembourg']).text,
+        requests.get(api['luxembourg']).text,
         dict_constructor=dict
     )
 

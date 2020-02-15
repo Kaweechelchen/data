@@ -1,3 +1,6 @@
 api:
-  ettelbruck: 'https://iot.rms.lu/opendata/parking/ettelbruck'
-  luxembourg: 'https://feed.vdl.lu/circulation/parking/feed.rss'
+  parking:
+    ettelbruck: https://iot.rms.lu/opendata/parking/ettelbruck
+    luxembourg: https://feed.vdl.lu/circulation/parking/feed.rss
+  charging_stations:
+    chargy: https://my.chargy.lu/b2bev-external-services/resources/kml?API-KEY=486ac6e4-93b8-4369-9c6a-28f7c4e1a81f

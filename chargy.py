@@ -62,7 +62,6 @@ def get_charging_stations():
     )
 
 if __name__ == '__main__':
-    # print(
-    #     json.dumps(get_charging_stations())
-    # )
-    pprint(get_charging_stations())
+    print(
+        json.dumps(get_charging_stations())
+    )

@@ -4,10 +4,17 @@ import yaml
 import requests
 import xmltodict
 import re
+import argparse
 import json
+from pprint import pprint
 
 with open('config.yml', 'r') as config_data:
     api = yaml.load(config_data, yaml.BaseLoader)['api']['parking']
+
+parser = argparse.ArgumentParser(description='Chargy station statuses.')
+parser.add_argument('--no-details', action='store_true', help='only return totals of different parkings')
+
+args = parser.parse_args()
 
 def get_ettelbruck():
     raw = requests.get(api['ettelbruck']).json()
@@ -35,7 +42,8 @@ def get_ettelbruck():
                 raise Exception('unknown free parking type [{}]'.format(availability['Type']))
             free_count += int(availability['Count'])
         parking['free'] = int(free_count)
-        parking['free-detail'] = free_detail
+        if not args.no_details:
+            parking['free-detail'] = free_detail
         parkings.append(parking)
 
     return parkings
@@ -65,8 +73,9 @@ def get_luxembourg():
             free_detail['general'] = int(parking_raw['vdlxml:actuel'])
         free_detail['disabled'] = None
         free_detail['ev'] = None
-        parking['free-detail'] = free_detail
-        
+        if not args.no_details:
+            parking['free-detail'] = free_detail
+
         parkings.append(parking)
 
     return parkings

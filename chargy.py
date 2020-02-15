@@ -41,7 +41,7 @@ def get_chargy_connectors():
         for chg_device in station['ExtendedData']['Data']:
             if chg_device['@name'] != 'chargingdevice':
                 continue
-                
+
             for raw_connector in json.loads(chg_device['value'])['connectors']:
                 status = raw_connector['description'].lower()
                 connector = {
@@ -54,7 +54,7 @@ def get_chargy_connectors():
                 total[status] += 1
 
                 connectors.append(connector)
-    
+
     if args.total:
         return total
     return {

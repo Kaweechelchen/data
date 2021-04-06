@@ -25,7 +25,7 @@ def get_ettelbruck():
     for parking_raw in raw['Parkings']:
       parking = {}
       parking['city'] = 'Ettelbruck'
-      parking['name'] = re.search('Parking\s(.*)',parking_raw['Name']).group(1)
+      parking['name'] = re.search('(Parking\s)?(.*)',parking_raw['Name']).group(2)
       if parking_raw['Info1'] is None:
         parking['total'] = None
       else:
@@ -49,6 +49,7 @@ def get_ettelbruck():
       parkings.append(parking)
   except Exception as e:
     print(e)
+    raise e
     return []
 
   return parkings

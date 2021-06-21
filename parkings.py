@@ -9,7 +9,7 @@ import json
 from bs4 import BeautifulSoup
 from pprint import pprint
 
-with open('config.yml', 'r') as config_data:
+with open(os.path.dirname(os.path.realpath(__file__)) + '/config.yml', 'r') as config_data:
   api = yaml.load(config_data, yaml.BaseLoader)['api']['parking']
 
 parser = argparse.ArgumentParser(description='Chargy station statuses.')
@@ -46,6 +46,8 @@ def get_ettelbruck():
       parking['free'] = int(free_count)
       if not args.no_details:
         parking['free-detail'] = free_detail
+      if parking['total']:
+        parking['used'] = parking['total'] - parking['free']
       parkings.append(parking)
   except Exception as e:
     print(e)
@@ -83,6 +85,8 @@ def get_luxembourg():
       if not args.no_details:
         parking['free-detail'] = free_detail
 
+      if parking['total']:
+        parking['used'] = parking['total'] - parking['free']
       parkings.append(parking)
   except:
     return []
@@ -114,6 +118,7 @@ def get_esch():
       if not args.no_details:
         parking['free-detail'] = free_detail
 
+      parking['used'] = parking['total'] - parking['free']
       parkings.append(parking)
   except Exception as e:
     print(e)

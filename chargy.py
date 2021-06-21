@@ -8,7 +8,7 @@ import json
 import argparse
 from pprint import pprint
 
-with open('config.yml', 'r') as config_data:
+with open(os.path.dirname(os.path.realpath(__file__)) + '/config.yml', 'r') as config_data:
     api = yaml.load(config_data, yaml.BaseLoader)['api']['charging_stations']
 
 parser = argparse.ArgumentParser(description='Chargy station statuses.')

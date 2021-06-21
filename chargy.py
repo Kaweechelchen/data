@@ -31,7 +31,8 @@ def get_chargy_connectors():
   total = {
     'available': 0,
     'offline': 0,
-    'charging': 0
+    'charging': 0,
+    'unavailable': 0,
   }
 
   for station in get_chargy_stations():

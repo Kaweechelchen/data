@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import yaml
-import requests
-import xmltodict
-import re
 import argparse
 import json
+import os
+import re
+import requests
+import xmltodict
+import yaml
 from bs4 import BeautifulSoup
 from pprint import pprint
 
@@ -17,6 +18,7 @@ parser.add_argument('--no-details', action='store_true', help='only return total
 
 args = parser.parse_args()
 
+
 def get_ettelbruck():
   raw = requests.get(api['ettelbruck']).json()
 
@@ -25,7 +27,7 @@ def get_ettelbruck():
     for parking_raw in raw['Parkings']:
       parking = {}
       parking['city'] = 'Ettelbruck'
-      parking['name'] = re.search('(Parking\s)?(.*)',parking_raw['Name']).group(2)
+      parking['name'] = re.search('(Parking\s)?(.*)', parking_raw['Name']).group(2)
       if parking_raw['Info1'] is None:
         parking['total'] = None
       else:
@@ -93,6 +95,7 @@ def get_luxembourg():
 
   return parkings
 
+
 def get_esch():
   name_html = BeautifulSoup(requests.get(api['esch']['name']).text, 'html.parser')
   data = requests.get(api['esch']['data']).json()
@@ -126,12 +129,14 @@ def get_esch():
 
   return parkings
 
+
 def get_parking():
   return (
     get_ettelbruck() +
     get_luxembourg() +
     get_esch()
   )
+
 
 if __name__ == '__main__':
   print(

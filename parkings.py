@@ -133,6 +133,7 @@ def get_esch():
 def get_parking():
   total = {
     'city': 'total',
+    'name': 'total',
     'total': 0,
     'free': 0,
     'used': 0

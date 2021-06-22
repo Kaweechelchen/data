@@ -4,11 +4,11 @@ import argparse
 import json
 import os
 import re
+
 import requests
 import xmltodict
 import yaml
 from bs4 import BeautifulSoup
-from pprint import pprint
 
 with open(os.path.dirname(os.path.realpath(__file__)) + '/config.yml', 'r') as config_data:
   api = yaml.load(config_data, yaml.BaseLoader)['api']['parking']
@@ -131,11 +131,27 @@ def get_esch():
 
 
 def get_parking():
-  return (
+  total = {
+    'city': 'total',
+    'total': 0,
+    'free': 0,
+    'used': 0
+  }
+
+  parkings = (
     get_ettelbruck() +
     get_luxembourg() +
     get_esch()
   )
+
+  for parking in parkings:
+    total['total'] += 0 if parking['total'] is None else parking['total']
+    total['used'] += 0 if parking['total'] is None else 0 if 'used' not in parking else parking['used']
+    total['free'] += 0 if parking['free'] is None else parking['free']
+
+  parkings.append(total)
+
+  return parkings
 
 
 if __name__ == '__main__':

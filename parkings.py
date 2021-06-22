@@ -23,6 +23,13 @@ def get_ettelbruck():
   raw = requests.get(api['ettelbruck']).json()
 
   parkings = []
+  total = {
+    'city': 'Ettelbruck',
+    'name': 'total',
+    'total': 0,
+    'free': 0,
+    'used': 0
+  }
   try:
     for parking_raw in raw['Parkings']:
       parking = {}
@@ -32,6 +39,7 @@ def get_ettelbruck():
         parking['total'] = None
       else:
         parking['total'] = int(re.search('(\d+).*', parking_raw['Info1']).group(1))
+        total['total'] += parking['total']
 
       free_detail = {}
       free_count = 0
@@ -46,11 +54,16 @@ def get_ettelbruck():
           raise Exception('unknown free parking type [{}]'.format(availability['Type']))
         free_count += int(availability['Count'])
       parking['free'] = int(free_count)
+      total['free'] += parking['free']
       if not args.no_details:
         parking['free-detail'] = free_detail
       if parking['total']:
         parking['used'] = parking['total'] - parking['free']
+        total['used'] += parking['used']
       parkings.append(parking)
+
+    parkings.append(total)
+
   except Exception as e:
     print(e)
     raise e
@@ -66,6 +79,13 @@ def get_luxembourg():
   )
 
   parkings = []
+  total = {
+    'city': 'Luxembourg',
+    'name': 'total',
+    'total': 0,
+    'free': 0,
+    'used': 0
+  }
   try:
     for parking_raw in raw['rss']['channel']['item']:
       parking = {}
@@ -75,12 +95,14 @@ def get_luxembourg():
         parking['total'] = None
       else:
         parking['total'] = int(parking_raw['vdlxml:total'])
+        total['total'] += parking['total']
       free_detail = {}
       if parking_raw['vdlxml:actuel'] is None:
         parking['free'] = None
         free_detail['general'] = None
       else:
         parking['free'] = int(parking_raw['vdlxml:actuel'])
+        total['free'] += parking['free']
         free_detail['general'] = int(parking_raw['vdlxml:actuel'])
       free_detail['disabled'] = None
       free_detail['ev'] = None
@@ -89,7 +111,10 @@ def get_luxembourg():
 
       if parking['total']:
         parking['used'] = parking['total'] - parking['free']
+        total['used'] += parking['used']
       parkings.append(parking)
+
+    parkings.append(total)
   except:
     return []
 
@@ -106,6 +131,13 @@ def get_esch():
     parking_names[parking.get_attribute_list('data-id')[0]] = parking.p.string
 
   parkings = []
+  total = {
+    'city': 'Esch',
+    'name': 'total',
+    'total': 0,
+    'free': 0,
+    'used': 0
+  }
   try:
     for idx in data:
       parking_raw = data[idx]
@@ -113,8 +145,10 @@ def get_esch():
       parking['city'] = 'Esch'
       parking['name'] = parking_names[idx]
       parking['total'] = int(parking_raw['capacity'])
+      total['total'] += parking['total']
       free_detail = {}
       parking['free'] = int(parking_raw['free'])
+      total['free'] += parking['free']
       free_detail['general'] = int(parking_raw['free'])
       free_detail['disabled'] = None
       free_detail['ev'] = None
@@ -122,7 +156,9 @@ def get_esch():
         parking['free-detail'] = free_detail
 
       parking['used'] = parking['total'] - parking['free']
+      total['used'] += parking['used']
       parkings.append(parking)
+    parkings.append(total)
   except Exception as e:
     print(e)
     return []
